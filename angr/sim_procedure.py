@@ -121,6 +121,7 @@ class SimProcedure(object):
             state.history.recent_syscall_count = 1
             if len(state.posix.queued_syscall_returns):
                 override = state.posix.queued_syscall_returns.pop(0)
+            print("SYSCALL:", self, override)
 
         if callable(override):
             try:
