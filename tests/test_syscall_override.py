@@ -42,7 +42,6 @@ def run_fauxware_override(arch):
     assert results.found[0].posix.dumps(0) == b'SOSNEAKY'
     assert results.found[0].posix.dumps(1) == b"HAHA\0"
 
-import ipdb
 def test_concrete_syscall_effects(arch="x86_64"):
     p = angr.Project(os.path.join(test_location, arch, "fauxware"), use_sim_procedures=False)
     s = p.factory.full_init_state()
