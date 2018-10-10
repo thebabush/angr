@@ -8,7 +8,7 @@ l = logging.getLogger("angr.sim_procedure")
 symbolic_count = itertools.count()
 
 
-class SimProcedure(object):
+class SimProcedure:
     """
     A SimProcedure is a wonderful object which describes a procedure to run on a state.
 
@@ -66,7 +66,7 @@ class SimProcedure(object):
 
         # Get the concrete number of arguments that should be passed to this procedure
         if num_args is None:
-            run_spec = inspect.getargspec(self.run)
+            run_spec = inspect.getfullargspec(self.run)
             self.num_args = len(run_spec.args) - (len(run_spec.defaults) if run_spec.defaults is not None else 0) - 1
         else:
             self.num_args = num_args
@@ -174,7 +174,7 @@ class SimProcedure(object):
                 ' (stub)' if self.is_stub else '',
                 sim_args,
                 self.kwargs)
-        r = getattr(self, self.run_func)(*sim_args, **self.kwargs)
+        r = getattr(self, self.run_func)(*sim_args, **self.kwargs) #pylint:disable=assignment-from-no-return
         return r
 
 
@@ -182,7 +182,7 @@ class SimProcedure(object):
         # make a copy of the canon copy, customize it for the specific continuation, then hook it
         if name not in self.canonical.continuations:
             cont = copy.copy(self.canonical)
-            cont.addr = self.project.loader.extern_object.allocate()
+            cont.addr = self.project.loader.extern_object.allocate() #pylint:disable=attribute-defined-outside-init
             cont.is_continuation = True
             cont.run_func = name
             self.canonical.continuations[name] = cont
